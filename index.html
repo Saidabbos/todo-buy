@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Hover</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="row">
+        <div class="col">
+            <input type="text" id="name">
+        </div>
+        <div class="col">
+            <input type="text" id="measure">
+        </div>
+        <div class="col">
+            <button onclick="addProduct()">+</button>
+        </div>
+        <div style="clear: both"></div>
+    </div>
+    <div id="products">
+
+    </div>
+</body>
+<script>
+    var products = [];
+
+    window.onload = function () {
+        render();
+    }
+
+    function addProduct () {
+        var name = document.getElementById('name').value;
+        var measure = document.getElementById('measure').value;
+
+        products.push({
+            name: name,
+            measure: measure,
+            price: null,
+            bought: false
+        });
+
+       document.getElementById('name').value = '';
+       document.getElementById('measure').value = '';
+
+        render();
+    }
+
+    function render () {
+        var html = '<ul>';
+        var totalPrice = 0;
+
+        products.map((item, i) => {
+            html += `<li><span class="${item.bought ? 'del' : ''} ">${item.name} ---- ${item.measure} kg</span> ${!item.bought ? '<button class="buy" onclick="askPrice(' + i + ')">Sotib olindi</button>' : '<span>' + item.price+ ' Sum </span>'}</li>`
+            if (item.price) {
+                totalPrice += parseInt(item.price)
+            }
+        });
+
+        document.getElementById('products').innerHTML = html + "<li>Jami: <strong>" + totalPrice + " So'm</strong></li>";
+    }
+
+    function askPrice(i) {
+        var price = window.prompt('Qanchaga sotib oldingiz ?')
+        if (price) {
+            products[i].price = price
+            products[i].bought = true;
+            render();
+        }
+    }
+
+
+</script>
+</html>
